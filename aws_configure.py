@@ -50,8 +50,10 @@ def create_update_keys(users):
 			child.sendline('us-east-1')
 			child.expect('.*output format.*')
 			child.sendline('json')
-
-	export_output = os.system("export AWS_DEFAULT_PROFILE="+users[0])
+	if len(users) > 0:
+		export_output = os.system("export AWS_DEFAULT_PROFILE="+users[0])
+	else:
+		return "There are not users profiles exists within the respective time period : int(days)"
 
 create_update_keys(users)
 
@@ -65,5 +67,8 @@ for username in usernames:
         inactive.append([response['AccessKeyMetadata'][key] for key in range(len(response['AccessKeyMetadata'])) if response['AccessKeyMetadata'][key]['Status'] == 'Inactive'])
 
 for inact in range(len(inactive)):
-	delete_keys(inactive[inact][0]['AccessKeyId'],inactive[inact][0]['UserName'])
+	if len(inactive[inact]) > 0:
+		delete_keys(inactive[inact][0]['AccessKeyId'],inactive[inact][0]['UserName'])
+	else:
+		print ("There are no user keys exists within the time period: %d" %(days))
 
