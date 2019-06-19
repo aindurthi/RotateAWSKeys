@@ -30,8 +30,8 @@ def create_update_keys(users):
 
 	for date in range(len(dates)):
 		dayscount.append(today - dates[date][0].replace(tzinfo=None))
-		users = [usernames[day] for day in range(len(dayscount)) if dayscount[day].days >= 0]
-		useraccessids = [accesskeyids[day][0] for day in range(len(dayscount)) if dayscount[day].days >= 0]
+		users = [usernames[day] for day in range(len(dayscount)) if dayscount[day].days >= 2]
+		useraccessids = [accesskeyids[day][0] for day in range(len(dayscount)) if dayscount[day].days >= 2]
 
 	for user in range(len(users)):
 		update_key_status = iam_client.update_access_key(AccessKeyId=useraccessids[user],Status='Inactive',UserName=users[user])
