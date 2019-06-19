@@ -1,5 +1,5 @@
 # RotateAWSKeys
-This is a python script that is used to automatically rotate the IAM keys of the multiple users using a cron scheduler.
+This is a python script that is used to automatically rotate the IAM keys of the multiple users using a cron scheduler.And add the respective user's profile in the credentials file.
 # Prerequisites
 1. Python 2.7.5
 2. Boto3
