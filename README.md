@@ -11,5 +11,5 @@ This is a python script that is used to automatically rotate the IAM keys of the
 3. crontab -l
 
 # Number of Days
-To automatically rotate the access key and delete the previous keys based on days ex: 15,20,30...etc then change the "days" value in the "aws_configure.py" script.
+To automatically rotate the access & secret keys and delete the previous keys based on days ex: 15,20,30...etc then change the "days" value in the "aws_configure.py" script.
 
