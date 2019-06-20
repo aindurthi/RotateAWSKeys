@@ -1,9 +1,14 @@
+#!/usr/bin/python
 import os
 import boto3
 import pexpect
 import datetime
 import subprocess
+import logging
 from botocore.exceptions import ClientError
+
+logfilename = "/var/log/awsrotate.log"
+logging.basicConfig(filename=logfilename,level=logging.INFO,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 days = 2
 usernames = []
@@ -52,8 +57,9 @@ def create_update_keys(users):
 			child.sendline('json')
 	if len(users) > 0:
 		export_output = os.system("export AWS_DEFAULT_PROFILE="+users[0])
+		logging.info("User keys updated successfully")
 	else:
-		return "There are not users profiles exists within the respective time period : int(days)"
+		logging.info("There are no users profiles exists within the respective time period : %d" % (int(days)))
 
 create_update_keys(users)
 
@@ -69,6 +75,18 @@ for username in usernames:
 for inact in range(len(inactive)):
 	if len(inactive[inact]) > 0:
 		delete_keys(inactive[inact][0]['AccessKeyId'],inactive[inact][0]['UserName'])
+		logging.info("User keys deleted successfully for %s" %(inactive[inact][0]['UserName']))
 	else:
-		print ("There are no user keys exists within the time period: %d" %(days))
+		logging.info("There are no user keys exists within the time period: %d" %(days))
 
+def readfile(filename):
+    logfile = open(filename,"r")
+    logfile_lines = logfile.readlines()
+    for line in logfile_lines:
+        if "botocore.credentials" in line:
+            logfile_lines.remove(line)
+    updatefile = open(filename, "w")
+    for appendline in logfile_lines:
+        updatefile.write(appendline)
+
+readfile(logfilename)
